@@ -19,3 +19,5 @@ resource "aws_key_pair" "mlops_auth" {
 
 
 export DATABASE_URL="mysql+pymysql://mlops_user:Ankara06@mlops-db.cw17zk3pwfhh.eu-west-1.rds.amazonaws.com/mlops-db"
+
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
