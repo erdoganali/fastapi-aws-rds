@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Depends, Request
 from sqlalchemy.orm import Session 
-from models import CreateUpdateChurn  
-from config import load_model_from_s3
-from database import insert_request_to_db, get_db
+from models import CreateUpdateChurn, Churn 
+from config import load_model_from_s3, get_db
+#from database import get_db
 import numpy as np
 
 ## Load Model
@@ -24,8 +24,8 @@ async def predict_churn(request: CreateUpdateChurn,
                         db: Session = Depends(get_db) 
                          ) -> dict:
     prediction = make_churn_prediction(model, request.dict())   
-    db_insert_record = insert_request_to_db(request=request.dict(),prediction=prediction,client_ip=fastapi_req.client.host,db=db)
-    return {"prediction": db_insert_record }
+    inserted_record = insert_request_to_db(request=request.dict(),prediction=prediction,client_ip=fastapi_req.client.host,db=db)
+    return  {"inserted_record": inserted_record}
 
 
 
@@ -47,8 +47,28 @@ def make_churn_prediction(model, request):
     person = [[creditScore, geography, gender, age, tenure, balance, numOfProducts, hasCrCard, isActiveMember, estimatedSalary]]
     
     # Predict
-    prediction = model.predict(person)
-  
-
+    prediction = model.predict(person) 
     return prediction[0]
-  
+
+
+def insert_request_to_db (request, prediction, client_ip, db):
+    new_churn = Churn(
+        creditScore=request["creditScore"],
+        geography=request['geography'],
+        age = request['age'],
+        tenure = request['tenure'],
+        balance = request['balance'],
+        numOfProducts = request['numOfProducts'],
+        hasCrCard = request['hasCrCard'],
+        isActiveMember = request['isActiveMember'],
+        estimatedSalary = request['estimatedSalary'],
+        prediction=prediction,
+        client_ip=client_ip
+    )
+
+    with db as session:
+        session.add(new_churn)
+        session.commit()
+        session.refresh(new_churn)
+
+    return new_churn
