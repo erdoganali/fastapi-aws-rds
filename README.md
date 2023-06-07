@@ -26,3 +26,6 @@ source /fastapi/bin/activate
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 
 sudo systemctl status uvicorn
+
+ ssh -i "~/.ssh/mlops-central-key.pub" ec2-user@ec2-18-195-216-178.eu-central-1.compute.amazonaws.com
+
