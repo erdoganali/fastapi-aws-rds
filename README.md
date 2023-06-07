@@ -24,3 +24,5 @@ export DATABASE_URL="mysql+pymysql://mlops_user:Ankara06@mlops-db.cw17zk3pwfhh.e
 source /fastapi/bin/activate
 
 uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+sudo systemctl status uvicorn
