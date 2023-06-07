@@ -7,3 +7,4 @@ joblib==1.2.0
 python-dotenv
 boto3
 SQLAlchemy==2.0.4
+sqlmodel==0.0.8
