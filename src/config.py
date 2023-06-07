@@ -35,7 +35,17 @@ def load_model_from_s3():
 
 
 ## RDS MYSQL OPS 
-SQLALCHEMY_DATABASE_URL = os.getenv('SQLALCHEMY_DATABASE_URL')   
+#SQLALCHEMY_DATABASE_URL = os.getenv('SQLALCHEMY_DATABASE_URL') 
+#    
+SQLALCHEMY_DATABASE_URL = os.environ["DATABASE_URL"]
+
+# Use the rendered DATABASE_URL environment variable
+#SQLALCHEMY_DATABASE_URL = os.environ["DATABASE_URL"] 
+
+# Read the DATABASE_URL from /tmp/env.txt
+# with open("/tmp/env.txt", "r") as f:
+#     SQLALCHEMY_DATABASE_URL = f.read().strip()
+
 engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
 
 
