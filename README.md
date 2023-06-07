@@ -9,6 +9,7 @@ terraform apply --auto-approve
 
 terraform destroy --auto-approve
 
+terraform destroy -target=aws_instance.mlops_dev_node
 
 ssh-keygen -t rsa -b 2048 -f ~/.ssh/mlops-central-key 
 
