@@ -13,6 +13,8 @@ terraform destroy -target=aws_instance.mlops_dev_node
 
 ssh-keygen -t rsa -b 2048 -f ~/.ssh/mlops-central-key 
 
+ssh-keygen -t rsa -b 2048 -f ~/.ssh/mlops-central-key -N ''
+
 resource "aws_key_pair" "mlops_auth" {
   public_key = file("~/.ssh/mlops-central-key.pub")
   key_name = "mlops-aws-key"
