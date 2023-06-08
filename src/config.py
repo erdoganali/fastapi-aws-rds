@@ -5,8 +5,7 @@ import boto3
 import logging
 import tempfile
 from sqlmodel import create_engine, SQLModel
-from sqlalchemy.orm import Session  
-from models import Base
+from sqlalchemy.orm import Session   
 
 load_dotenv() 
 
@@ -63,14 +62,7 @@ DATABASE_NAME = os.environ['DATABASE_NAME']
 DATABASE_URL = f"mysql+pymysql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 
 engine = create_engine(DATABASE_URL)
-Base.metadata.create_all(engine)
-
-def get_db():
-    db = Session(engine)
-    try:
-        yield db
-    finally:
-        db.close()
+SQLModel.metadata.create_all(engine)
 
 def get_db():
     db = Session(engine)
