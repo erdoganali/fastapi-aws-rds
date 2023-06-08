@@ -29,5 +29,6 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --reload --log-level debug
 
 sudo systemctl status uvicorn
 
- ssh -i "~/.ssh/mlops-central-key.pub" ec2-user@ec2-18-195-216-178.eu-central-1.compute.amazonaws.com
+ssh -i "mlkey.pem" ec2-user@ec2-3-67-132-170.eu-central-1.compute.amazonaws.com
+
 
