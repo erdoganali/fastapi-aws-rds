@@ -1,9 +1,7 @@
 from fastapi import FastAPI, Depends, Request
 from sqlalchemy.orm import Session 
 from models import CreateUpdateChurn, Churn 
-from config import load_model_from_s3, get_db
-#from database import get_db
-import numpy as np
+from config import load_model_from_s3  
 
 ## Load Model
 
@@ -20,11 +18,10 @@ def root_endpoint():
  
 @app.post("/prediction/churn")
 async def predict_churn(request: CreateUpdateChurn,
-                        fastapi_req: Request,  
-                        db: Session = Depends(get_db) 
+                        fastapi_req: Request  
                          ) -> dict:
     prediction = make_churn_prediction(model, request.dict())   
-    inserted_record = insert_request_to_db(request=request.dict(),prediction=prediction,client_ip=fastapi_req.client.host,db=db)
+    inserted_record = insert_request_to_db(request=request.dict(),prediction=prediction,client_ip=fastapi_req.client.host)
     return  {"inserted_record": inserted_record}
 
 
@@ -51,7 +48,7 @@ def make_churn_prediction(model, request):
     return prediction[0]
 
 
-def insert_request_to_db (request, prediction, client_ip, db):
+def insert_request_to_db (request, prediction, client_ip ):
     new_churn = Churn(
         creditScore=request["creditScore"],
         geography=request['geography'],
@@ -66,9 +63,9 @@ def insert_request_to_db (request, prediction, client_ip, db):
         client_ip=client_ip
     )
 
-    with db as session:
-        session.add(new_churn)
-        session.commit()
-        session.refresh(new_churn)
+    # with db as session:
+    #     session.add(new_churn)
+    #     session.commit()
+    #     session.refresh(new_churn)
 
     return new_churn
