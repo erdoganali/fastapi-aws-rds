@@ -52,7 +52,7 @@ def load_model_from_s3():
 # Connect to the DB and create the database 
 # def create_db_and_tables():
 #     SQLModel.metadata.create_all(engine) 
-
+ 
 DATABASE_USER = os.environ['DATABASE_USER']
 DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
 DATABASE_HOST = os.environ['DATABASE_HOST']
@@ -62,7 +62,9 @@ DATABASE_NAME = os.environ['DATABASE_NAME']
 DATABASE_URL = f"mysql+pymysql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:3306/{DATABASE_NAME}"
 
 engine = create_engine(DATABASE_URL)
-SQLModel.metadata.create_all(engine)
+  
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
 
 def get_db():
     db = Session(engine)
