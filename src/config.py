@@ -34,43 +34,23 @@ def load_model_from_s3():
     return model
 
 
-## RDS MYSQL OPS   
-
-# conn = pymysql.connect(os.environ["DATABASE_ENDPOINT"], 
-#                        user='mlops_user', 
-#                        passwd='Ankara06', connect_timeout=10)
-# with conn.cursor() as cur:
-#     cur.execute('create database mlopsdb;')
-
-# SQLALCHEMY_DATABASE_URL = os.environ["DATABASE_URL"]
-# engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)  
-
-# Read the DATABASE_URL from /tmp/env.txt
-# with open("/tmp/env.txt", "r") as f:
-#     SQLALCHEMY_DATABASE_URL = f.read().strip()
- 
-# Connect to the DB and create the database 
-# def create_db_and_tables():
-#     SQLModel.metadata.create_all(engine) 
- 
-
+## RDS MYSQL OPS    
   
-# def create_db_and_tables():
-#     DATABASE_USER = os.environ['DATABASE_USER']
-#     DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
-#     DATABASE_HOST = os.environ['DATABASE_HOST']
-#     DATABASE_PORT = os.environ['DATABASE_PORT']
-#     DATABASE_NAME = os.environ['DATABASE_NAME']
+DATABASE_USER = os.environ['DATABASE_USER']
+DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
+DATABASE_HOST = os.environ['DATABASE_HOST']
+DATABASE_PORT = os.environ['DATABASE_PORT']
+DATABASE_NAME = os.environ['DATABASE_NAME']
 
-#     DATABASE_URL = f"mysql+pymysql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:3306/{DATABASE_NAME}"
+DATABASE_URL = f"mysql+pymysql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}/{DATABASE_NAME}"
 
-#     engine = create_engine(DATABASE_URL)
-#     SQLModel.metadata.create_all(engine)
+engine = create_engine(DATABASE_URL)
+SQLModel.metadata.create_all(engine)
 
-# def get_db():
-#     db = Session(engine)
-#     try:
-#         yield db
-#     finally:
-#         db.close()
+def get_db():
+    db = Session(engine)
+    try:
+        yield db
+    finally:
+        db.close()
  
